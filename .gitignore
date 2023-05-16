@@ -1,2 +1,4 @@
 # CodeQL compilation caches
 .cache/
+vscode-codeql-starter.code-workspace
+.vscode/settings.json
