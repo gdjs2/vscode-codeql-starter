@@ -8,10 +8,6 @@
 import cpp
 import semmle.code.cpp.dataflow.TaintTracking
 
-Expr isArg(FunctionCall fc, Expr e) {
-  
-}
-
 class FunctionFCall extends Expr {
   FunctionFCall() {
     exists(FunctionCall fc, Function f | 
@@ -39,11 +35,10 @@ class F2VulConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node node) {
     exists(FunctionCall fc | 
       fc.getTarget().getName() = "vul" and
-      node.asExpr() = fc.getArgument(0) and 
-      node.asExpr() = fc.getQua)
+      node.asExpr() = fc.getArgument([0 .. fc.getNumberOfArguments()]))
   }
 }
 
 from F2VulConfig cfg, DataFlow::PathNode src, DataFlow::PathNode sink
 where cfg.hasFlowPath(src, sink)
-select sink, src, "is vul datapath"
+select "from", sink, "to", src
